@@ -3,12 +3,11 @@ import { FlatList, Image, RefreshControl, SafeAreaView, StyleSheet, Text, Toucha
 import SearchBar from "../common/Search";
 import { characterServices } from "../services/CharacterServices";
 
-const CharacterList = ({ navigation }) => {
+const Screen1 = ({ navigation }) => {
   const [artists, setArtists] = useState([]);
-  const [page, setPage] = useState(1);
-  const [meta, setMeta] = useState({ last_page: 1 });
   const [refreshing, setRefreshing] = useState(false);
   const [querySearch, setQuerySearch] = useState("");
+  const [appearanceFilter, setAppearanceFilter] = useState(null);
 
   useEffect(() => {
     fetchCharacters();
@@ -16,7 +15,8 @@ const CharacterList = ({ navigation }) => {
 
   const fetchCharacters = async () => {
     await characterServices().then((response) => {
-      alert(JSON.stringify(response));
+      setArtists(response);
+      setRefreshing(false);
     });
   };
 
@@ -24,10 +24,28 @@ const CharacterList = ({ navigation }) => {
     return imageData ? { uri: imageData } : null;
   };
 
+  const filterData = () => {
+    if (appearanceFilter) {
+      return (
+        artists
+          .filter((val) =>
+            val.name.toLowerCase().includes(querySearch.toLowerCase()),
+          )
+          .filter((val) => val.appearance.includes(appearanceFilter)) || []
+      );
+    } else {
+      return (
+        artists.filter((val) =>
+          val.name.toLowerCase().includes(querySearch.toLowerCase()),
+        ) || []
+      );
+    }
+  };
+
   const onRefresh = () => {
     setArtists([]);
     setRefreshing(true);
-    setPage(1);
+    fetchCharacters();
   };
 
   const handleNavigate = (characterData) => {
@@ -35,8 +53,6 @@ const CharacterList = ({ navigation }) => {
   };
 
   const handleQuerySearch = (value) => {
-    setArtists([]);
-    setPage(1);
     setQuerySearch(value);
   };
 
@@ -47,25 +63,22 @@ const CharacterList = ({ navigation }) => {
       </View>
       {artists?.length > 0 && (
         <FlatList
-          data={artists}
+          style={{ marginBottom: 40 }}
+          data={filterData()}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          onEndReached={(e) => {
-            if (meta.last_page > page) {
-              setPage(page + 1);
-            }
-          }}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               key={item?.id}
-              onPress={() => handleNavigate(item?.id)}>
+              onPress={() => handleNavigate(item)}
+            >
               <View style={styles.artistSubContainer}>
                 <Image
                   style={styles.imageArtist}
-                  source={imageUrl(item?.attributes?.avatar)}
+                  source={imageUrl(item?.img)}
                 />
-                <Text style={styles.artistName}>{item?.attributes?.name}</Text>
+                <Text style={styles.artistName}>{item?.name}</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -104,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CharacterList;
+export default Screen1;

@@ -14,7 +14,9 @@ import useCombinedReducers from "use-combined-reducers";
 import { loaderReducer, loaderStateReducer, loaderValue } from "./src/reducers";
 import { ApiUtils } from "./src/utils/ApiUtils";
 import Loader from "./src/common/Loader/Loader";
-import CharacterList from "./src/screen/CharacterList";
+import Screen1 from "./src/screen/Screen1";
+import Screen2 from "./src/screen/Screen2";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const App: () => Node = () => {
   LogBox.ignoreLogs(["Animated: `useNativeDriver` was not specified."]);
@@ -35,17 +37,34 @@ const App: () => Node = () => {
           <StatusBar animated={true} backgroundColor="#101727" />
           <Loader />
           <NavigationContainer
-            theme={isDarkMode ? CustomDarkTheme : LightTheme}>
+            theme={isDarkMode ? CustomDarkTheme : LightTheme}
+          >
             <Stack.Navigator
               screenOptions={{ headerShown: false }}
-              initialRouteName="Characters">
-              <Stack.Group screenOptions={{ headerShown: false }}>
-                <Stack.Screen
-                  name="Characters"
-                  component={CharacterList}
-                  options={{ headerShown: false }}
-                />
-              </Stack.Group>
+              initialRouteName="Characters"
+            >
+              <Stack.Screen
+                name="Characters"
+                component={Screen1}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CharacterDetail"
+                component={Screen2}
+                options={({ navigation }) => ({
+                  title: "",
+                  headerShown: true,
+                  headerTransparent: true,
+                  headerLeft: () => (
+                    <Ionicons
+                      name="chevron-back"
+                      onPress={() => navigation.goBack()}
+                      size={30}
+                      color="white"
+                    />
+                  ),
+                })}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaProvider>

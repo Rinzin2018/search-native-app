@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import { StateContext } from "../../store";
+import { StateContext } from "../store";
 import Spinner from "react-native-loading-spinner-overlay";
 
 export default function Loader() {

@@ -49,7 +49,7 @@ const Screen1 = ({ navigation }) => {
   };
 
   const handleNavigate = (characterData) => {
-    navigation.navigate("CharacterDetail", { character: characterData });
+    navigation.navigate("Screen2", { character: characterData });
   };
 
   const handleQuerySearch = (value) => {

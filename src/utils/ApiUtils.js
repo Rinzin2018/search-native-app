@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL } from "@env";
-import { IS_LOADING, SNACKBAR_OPEN } from "../reducers";
+import { IS_LOADING } from "../reducers";
 
 axios.defaults.baseURL = API_URL;
 axios.defaults.timeout = 0;
@@ -35,19 +35,12 @@ ApiUtils.axios.interceptors.request.use(
   function(error) {
     changeLoaderStatus();
     if (!error.response) {
-      ApiUtils.dispatch({
-        type: SNACKBAR_OPEN,
-        payload: { isNotify: true, severity: "error", message: error.message },
-      });
+      // return error message accordingly
       return Promise.reject(error.message);
     }
     let message =
       error?.response?.data?.error || error?.response?.data?.errors?.join(", ");
     // Do something with request error
-    ApiUtils.dispatch({
-      type: SNACKBAR_OPEN,
-      payload: { isNotify: true, severity: "error", message: message },
-    });
     return Promise.reject(message);
   },
 );
@@ -60,10 +53,7 @@ ApiUtils.axios.interceptors.response.use(
   function(error) {
     changeLoaderStatus();
     if (!error.response) {
-      ApiUtils.dispatch({
-        type: SNACKBAR_OPEN,
-        payload: { isNotify: true, severity: "error", message: error.message },
-      });
+      // Do something with response error
       return Promise.reject(error.message);
     }
     if (error.response.status === 401) {
@@ -71,10 +61,7 @@ ApiUtils.axios.interceptors.response.use(
     }
     let message =
       error?.response?.data?.error || error?.response?.data?.errors?.join(", ");
-    ApiUtils.dispatch({
-      type: SNACKBAR_OPEN,
-      payload: { isNotify: true, severity: "error", message: message },
-    });
+    // Do something with response error
     return Promise.reject(message);
   },
 );

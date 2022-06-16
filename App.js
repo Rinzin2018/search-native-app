@@ -13,7 +13,7 @@ import { DispatchContext, StateContext } from "./src/store";
 import useCombinedReducers from "use-combined-reducers";
 import { loaderReducer, loaderStateReducer, loaderValue } from "./src/reducers";
 import { ApiUtils } from "./src/utils/ApiUtils";
-import Loader from "./src/common/Loader/Loader";
+import Loader from "./src/common/Loader";
 import Screen1 from "./src/screen/Screen1";
 import Screen2 from "./src/screen/Screen2";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -41,15 +41,15 @@ const App: () => Node = () => {
           >
             <Stack.Navigator
               screenOptions={{ headerShown: false }}
-              initialRouteName="Characters"
+              initialRouteName="Screen1"
             >
               <Stack.Screen
-                name="Characters"
+                name="Screen1"
                 component={Screen1}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="CharacterDetail"
+                name="Screen2"
                 component={Screen2}
                 options={({ navigation }) => ({
                   title: "",

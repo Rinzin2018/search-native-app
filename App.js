@@ -4,8 +4,7 @@
 
 import type { Node } from "react";
 import React, { useReducer } from "react";
-import { LogBox, StatusBar, useColorScheme } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { LogBox, useColorScheme } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CustomDarkTheme, LightTheme } from "./Theme";
@@ -33,41 +32,38 @@ const App: () => Node = () => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <SafeAreaProvider>
-          <StatusBar animated={true} backgroundColor="#101727" />
-          <Loader />
-          <NavigationContainer
-            theme={isDarkMode ? CustomDarkTheme : LightTheme}
+        <Loader />
+        <NavigationContainer
+          theme={isDarkMode ? CustomDarkTheme : LightTheme}
+        >
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="Screen1"
           >
-            <Stack.Navigator
-              screenOptions={{ headerShown: false }}
-              initialRouteName="Screen1"
-            >
-              <Stack.Screen
-                name="Screen1"
-                component={Screen1}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Screen2"
-                component={Screen2}
-                options={({ navigation }) => ({
-                  title: "",
-                  headerShown: true,
-                  headerTransparent: true,
-                  headerLeft: () => (
-                    <Ionicons
-                      name="chevron-back"
-                      onPress={() => navigation.goBack()}
-                      size={30}
-                      color="white"
-                    />
-                  ),
-                })}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </SafeAreaProvider>
+            <Stack.Screen
+              name="Screen1"
+              component={Screen1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Screen2"
+              component={Screen2}
+              options={({ navigation }) => ({
+                title: "",
+                headerShown: true,
+                headerTransparent: true,
+                headerLeft: () => (
+                  <Ionicons
+                    name="chevron-back"
+                    onPress={() => navigation.goBack()}
+                    size={30}
+                    color="white"
+                  />
+                ),
+              })}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </StateContext.Provider>
     </DispatchContext.Provider>
   );

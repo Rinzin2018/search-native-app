@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   artistImage: (scrollA) => ({
@@ -30,11 +30,18 @@ export const styles = StyleSheet.create({
   },
   artistNickname: {
     fontSize: 14,
-    textShadowOffset: { width: 2, height: 2 },
     color: "#fff",
     textShadowColor: "#000000",
     textShadowRadius: 10,
     textTransform: "capitalize",
+  },
+  artistOccupation: {
+    flex: 1,
+    fontSize: 14,
+    color: "#fff",
+    textShadowColor: "#000000",
+    textShadowRadius: 10,
+    textAlign: "center",
   },
   artistStatus: {
     fontSize: 14,

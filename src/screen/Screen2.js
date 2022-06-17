@@ -58,7 +58,9 @@ const Screen2 = ({ route, navigation }) => {
                   styles.artistStatus,
                   {
                     color:
-                      character?.status?.toLowerCase() === "alive" ? "#41cc0e" : "#e10925",
+                      character?.status?.toLowerCase() === "alive"
+                        ? "#41cc0e"
+                        : "#e10925",
                   },
                 ]}
               >
@@ -80,7 +82,11 @@ const Screen2 = ({ route, navigation }) => {
               }}
             >
               <Text style={styles.artistTitle}>Season appearance</Text>
-              <Text style={styles.artistTitle}>Occupation</Text>
+              <Text
+                style={[styles.artistTitle, { flex: 1, textAlign: "center" }]}
+              >
+                Occupation
+              </Text>
             </View>
             <View
               style={{
@@ -90,9 +96,18 @@ const Screen2 = ({ route, navigation }) => {
               }}
             >
               <Text style={styles.artistAppearance}>
-                {character?.appearance?.map((val) => val)?.join("   -   ")}
+                {character?.appearance
+                  ?.map(
+                    (val) =>
+                      `${
+                        character.appearance.length > 1
+                          ? val
+                          : `Season - ${val}`
+                      }`,
+                  )
+                  ?.join("   -   ")}
               </Text>
-              <Text style={[styles.artistNickname, { textAlign: "left" }]}>
+              <Text style={styles.artistOccupation}>
                 {character?.occupation || "---"}
               </Text>
             </View>

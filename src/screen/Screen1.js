@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Image, RefreshControl, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SearchBar from "../common/Search";
 import { characterServices } from "../services/CharacterServices";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FilterModel from "./FilterModel";
 
 const Screen1 = ({ navigation }) => {
   const [artists, setArtists] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [querySearch, setQuerySearch] = useState("");
   const [appearanceFilter, setAppearanceFilter] = useState(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetchCharacters();
@@ -43,8 +46,9 @@ const Screen1 = ({ navigation }) => {
   };
 
   const onRefresh = () => {
-    setArtists([]);
     setRefreshing(true);
+    setAppearanceFilter(null);
+    setQuerySearch("");
     fetchCharacters();
   };
 
@@ -56,14 +60,35 @@ const Screen1 = ({ navigation }) => {
     setQuerySearch(value);
   };
 
+  const handleAppearance = (data) => {
+    setOpen(false);
+    setAppearanceFilter(parseInt(data));
+  };
+
   return (
-    <SafeAreaView style={{ marginTop: 15 }}>
+    <SafeAreaView style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }}>
       <View style={{ marginBottom: 10 }}>
         <SearchBar placeholder={"Search..."} onChange={handleQuerySearch} />
       </View>
+      <TouchableOpacity
+        onPress={() => setOpen(true)}
+        style={{
+          marginBottom: 10,
+          flexDirection: "row",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Text style={{ color: "#fff", fontSize: 16, marginTop: 1 }}>
+          {appearanceFilter ? `Season ${appearanceFilter}` : "Select season"}
+        </Text>
+        <View style={{ marginLeft: 4 }}>
+          <Ionicons name="chevron-down" size={25} color="white" />
+        </View>
+      </TouchableOpacity>
+      <FilterModel open={open} handleAction={handleAppearance} />
       {artists?.length > 0 && (
         <FlatList
-          style={{ marginBottom: 40 }}
+          style={{ marginBottom: 70 }}
           data={filterData()}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
